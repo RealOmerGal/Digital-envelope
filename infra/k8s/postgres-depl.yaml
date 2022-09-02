@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: de-postgres-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: de-postgres
+  template:
+    metadata:
+      labels:
+        app: de-postgres
+    spec:
+      containers:
+        - name: de-postgres
+          image: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: de-postgres-srv
+spec:
+  selector:
+    app: de-postgres
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
