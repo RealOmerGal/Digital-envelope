@@ -27,8 +27,7 @@ const Dashboard = () => {
   const [data, setData] = useState<IDashboard>();
 
   const getData = async () => {
-    //TODO: replace to event.id instead of hard coded 8 (mock data)
-    const data = await UtilityService.generateDashboard(8);
+    const data = await UtilityService.generateDashboard(event.id);
     setData((prev) => data);
   };
 
@@ -45,7 +44,18 @@ const Dashboard = () => {
         </CenteringContainer>
       );
 
-    if (data)
+    // If theres no blessings yet
+    if (data && data?.amountDistribution.length < 1) {
+      return (
+        <Stack sx={{ flexGrow: 1 }}>
+          <DashboardToolbar />
+          <CenteringContainer sx={{ height: "80vh" }}>
+            <Typography variant="h4"> No Insights yet...</Typography>
+          </CenteringContainer>
+        </Stack>
+      );
+      //The if statemnt is for typescript, if we made it here,theres data
+    } else if (data)
       return (
         <Stack sx={{ flexGrow: 1 }}>
           <DashboardToolbar />
@@ -56,7 +66,7 @@ const Dashboard = () => {
                   title="Average Per Guest"
                   iconColor="#D14343"
                   icon={<InsertChartIcon />}
-                  mainStat={data.averagePerGuest + "$"}
+                  mainStat={data!.averagePerGuest + "$"}
                 >
                   <StatBox>
                     <ArrowDownward color="error" />
@@ -83,14 +93,14 @@ const Dashboard = () => {
                   icon={<GroupIcon />}
                   mainStat={
                     Math.floor(
-                      (data.paidGuests.current / data.paidGuests.max) * 100
+                      (data!.paidGuests.current / data!.paidGuests.max) * 100
                     ) + "%"
                   }
                 >
                   <Box sx={{ pt: 3 }}>
                     <LinearProgress
                       value={Math.floor(
-                        (data.paidGuests.current / data.paidGuests.max) * 100
+                        (data!.paidGuests.current / data!.paidGuests.max) * 100
                       )}
                       variant="determinate"
                     />
@@ -102,11 +112,11 @@ const Dashboard = () => {
                   title="Money Collected"
                   iconColor="#14B8A6"
                   icon={<AttachMoneyIcon />}
-                  mainStat={data.totalAmount + "$"}
+                  mainStat={data!.totalAmount + "$"}
                 ></DashboardCard>
               </StyledGrid>
               <Grid item lg={8} sm={12} xl={8} xs={12}>
-                <DashboardChart records={data.amountDistribution} />
+                <DashboardChart records={data!.amountDistribution} />
               </Grid>
             </Grid>
           </CenteringContainer>

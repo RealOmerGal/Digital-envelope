@@ -1,7 +1,7 @@
 import { ICreateEvent } from "../types/event";
 import axiosInstance from "./axios-instance";
 import Event from "../types/event";
-import { showErrorMessage } from "../utils";
+import { showErrorMessage } from "../utils/error-message.util";
 
 export class EventService {
   static readonly prefix = "/event";
@@ -9,10 +9,10 @@ export class EventService {
   public static async getById(id: number) {
     try {
       return await (
-        await axiosInstance.get(`${this.prefix}/${id}`)
+        await axiosInstance.get(this.prefix)
       ).data;
     } catch (e) {
-      showErrorMessage({ errorString: "Could not load events" });
+      showErrorMessage({ errorString: e + "" });
     }
   }
 
@@ -29,16 +29,16 @@ export class EventService {
     try {
       return (await axiosInstance.post(this.prefix, event)).data;
     } catch (e) {
-      showErrorMessage({});
+      showErrorMessage({ errorString: e + "" });
     }
   }
 
   public static async update(event: Event) {
     try {
       const { id, ...attrs } = { ...event };
-      return (await axiosInstance.put(`${this.prefix}/${id}`, attrs)).data;
+      return (await axiosInstance.put(this.prefix, attrs)).data;
     } catch (e) {
-      showErrorMessage({});
+      showErrorMessage({ errorString: e + "" });
     }
   }
 
@@ -46,18 +46,35 @@ export class EventService {
     try {
       return (await axiosInstance.delete(`${this.prefix}/${eventId}`)).data;
     } catch (e) {
-      showErrorMessage({});
+      showErrorMessage({ errorString: e + "" });
     }
   }
-  public static async reverseOpeningState(eventId: number, state: boolean) {
+  public static async reverseOpeningState(state: boolean) {
     try {
       return (
-        await axiosInstance.put(`${this.prefix}/${eventId}`, {
+        await axiosInstance.put(this.prefix, {
           closed: state,
         })
       ).data;
     } catch (e) {
-      showErrorMessage({});
+      showErrorMessage({ errorString: e + "" });
+    }
+  }
+
+  public static async store(event: Event): Promise<void> {
+    try {
+      return await axiosInstance.post(`${this.prefix}/store`, event);
+    }
+    catch (e) {
+      showErrorMessage({ errorString: e + "" })
+    }
+  }
+
+  public static async current(callback?: () => void) {
+    try {
+      return await (await axiosInstance.get(`${this.prefix}/current`)).data
+    } catch (e) {
+      showErrorMessage({ callback })
     }
   }
 }

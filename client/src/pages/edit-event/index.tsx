@@ -20,7 +20,8 @@ import { useEventStore } from "../../states/event-store";
 import { Event, EventTypes } from "../../types/event";
 import { ButtonContainer, StyledGridItem } from "./styles";
 import { EventService } from "../../services/event.service";
-import { showConfirmMessage, showSuccessMessage } from "../../utils";
+import { showConfirmMessage } from "../../utils/confirm-message.util";
+import { showSuccessMessage } from "../../utils/success-message.util";
 
 const EditEvent = () => {
   const { event, setEvent } = useEventStore();

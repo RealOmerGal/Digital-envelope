@@ -12,7 +12,7 @@ import { PaymentModule } from '../payment/payment.module';
     store: redisStore,
     host: process.env.REDIS_HOST ?? 'localhost',
     port: process.env.REDIS_PORT ?? '6379',
-    ttl: 60 * 30,
+    ttl: 60 * 3,
   })],
   controllers: [BlessingController],
   providers: [BlessingService],

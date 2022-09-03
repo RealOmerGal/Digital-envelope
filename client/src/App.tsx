@@ -18,14 +18,13 @@ const App = () => {
   const Dashboard = React.lazy(() => import("./pages/dashboard"));
   const CreateEvent = React.lazy(() => import("./pages/create-event"));
   const EditEvent = React.lazy(() => import("./pages/edit-event"));
-  const { setUser } = useUserStore();
+  const { user, setUser } = useUserStore();
   const fetchUser = async () => {
     const data = await AuthService.getUser();
     setUser(data);
   };
-
   useEffect(() => {
-    fetchUser();
+    if (user.id === "") fetchUser();
   }, []);
 
   const routes = [

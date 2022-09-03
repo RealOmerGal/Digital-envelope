@@ -1,4 +1,4 @@
-import { showErrorMessage } from "../utils";
+import { showErrorMessage } from "../utils/error-message.util";
 import axiosInstance from "./axios-instance";
 
 export class UtilityService {

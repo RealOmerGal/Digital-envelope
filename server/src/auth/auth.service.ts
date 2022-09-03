@@ -1,16 +1,13 @@
 import {
-  Injectable,
-  BadRequestException,
-  Inject,
-  Logger,
+  Injectable
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { User } from '../user/user.entity';
-import * as bcrypt from 'bcrypt';
+
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UserService) {}
+  constructor(private usersService: UserService) { }
 
   async googleAuth(req): Promise<User> {
     //Check if user already exists
@@ -23,7 +20,4 @@ export class AuthService {
     return this.usersService.create(req.user);
   }
 
-  hashData(data: string) {
-    return bcrypt.hash(data, 10);
-  }
 }

@@ -9,6 +9,7 @@ import {
 import { Box } from "@mui/system";
 import React from "react";
 import { Link } from "react-router-dom";
+import { EventService } from "../../../../services/event.service";
 import { useEventStore } from "../../../../states/event-store";
 import { Event } from "../../../../types/event";
 import { CardContainer } from "./styles";
@@ -16,11 +17,17 @@ import { CardContainer } from "./styles";
 const EventItem: React.FC<{ event: Event }> = ({ event }) => {
   const setEvent = useEventStore((state) => state.setEvent);
   const createdAt = new Date(event.createdAt).toLocaleDateString();
+
+  const storeEvent = async () => {
+    await EventService.store(event);
+    setEvent(event);
+  };
+
   return (
     <CardContainer>
       <Link
         style={{ textDecoration: "none" }}
-        onClick={() => setEvent(event)}
+        onClick={storeEvent}
         to={"/dashboard"}
       >
         <CardHeader

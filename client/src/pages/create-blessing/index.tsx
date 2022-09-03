@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
-import { useBlessingStore } from "../../states/blessing-store";
 import { ICreateBlessing } from "../../types/blessing";
 import {
   Box,
@@ -13,7 +12,7 @@ import {
 } from "@mui/material";
 import CenteringContainer from "../../components/CenteringContainer";
 import { BlessingService } from "../../services/blessing.service";
-import { showSuccessMessage } from "../../utils";
+import { showSuccessMessage } from "../../utils/success-message.util";
 
 const SubmitBlessing: React.FC<any> = () => {
   /*
