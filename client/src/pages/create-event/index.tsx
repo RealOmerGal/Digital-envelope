@@ -19,7 +19,7 @@ import CenteringContainer from "../../components/CenteringContainer";
 import SideBar from "../../components/sidebar";
 import { EventService } from "../../services/event.service";
 import { useUserStore } from "../../states/user-store";
-import { showConfirmMessage } from "../../utils";
+import { showConfirmMessage } from "../../utils/confirm-message.util";
 
 const CreateEvent: React.FC<any> = () => {
   const { setEvent } = useEventStore();

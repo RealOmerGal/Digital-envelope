@@ -8,6 +8,8 @@ import {
   UseInterceptors,
   CacheInterceptor,
   CACHE_MANAGER,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Public } from '../decorators/public.decorator';
@@ -16,9 +18,11 @@ import { Serialize } from '../interceptors/serialize.interceptor';
 import { BlessingService } from './blessing.service';
 import { BlessingDto } from './dto/blessing.dto';
 import { CreateBlessingDto } from './dto/create-blessing.dto';
+import { CurrentEvent } from '../decorators/current-event.decorator';
+import { Event } from '../event/event.entity';
+import { EventGuard } from 'src/guards/event.guard';
 
 @Controller('blessing')
-@UseInterceptors(CacheInterceptor)
 export class BlessingController {
   constructor(
     private readonly blessingService: BlessingService,
@@ -35,9 +39,17 @@ export class BlessingController {
     return await this.blessingService.create(dto, payment.id);
 
   }
-  @Get('/:eventid')
+  @UseGuards(EventGuard)
+  @Get()
   @Serialize(BlessingDto)
-  findByEvent(@Param('eventid') eventId: number) {
-    return this.blessingService.findByEvent(eventId);
+  @UseInterceptors(CacheInterceptor)
+  findByEvent(@CurrentEvent() event: Event) {
+    return this.blessingService.findByEvent(event.id);
   }
-}
+
+  @Get("/:eventid")
+  @Serialize(BlessingDto)
+  SortBlessings(@Param('eventid') eventId: number, @Query('sortBy') sortBy: string) {
+
+  }
+} 

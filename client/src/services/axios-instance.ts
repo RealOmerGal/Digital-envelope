@@ -1,6 +1,6 @@
 import axios from "axios";
 import { serverUrl } from "../config";
-import { showErrorMessage } from "../utils";
+import { showErrorMessage } from "../utils/error-message.util";
 
 const axiosInstance = axios.create({
   baseURL: serverUrl,

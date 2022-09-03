@@ -10,7 +10,7 @@ export const RequireAuth = (props: Props) => {
   const { user } = useUserStore();
 
   useEffect(() => {
-    if (!user) {
+    if (user.id === "") {
       window.location.replace(`${serverUrl}/auth/google`);
     }
   });

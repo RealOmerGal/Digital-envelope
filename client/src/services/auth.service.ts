@@ -1,6 +1,6 @@
 import axiosInstance from "./axios-instance";
 import { serverUrl } from "../config";
-import { showErrorMessage } from "../utils";
+import { showErrorMessage } from "../utils/error-message.util";
 
 export class AuthService {
   static readonly prefix = "/auth";
@@ -10,7 +10,7 @@ export class AuthService {
       return await (
         await axiosInstance.get(`${this.prefix}/currentuser`)
       ).data;
-    } catch (e) {}
+    } catch (e) { }
   }
   public static login(): void {
     window.location.href = serverUrl + `${this.prefix}/google`;
