@@ -17,10 +17,13 @@ export class BlessingService {
     return await this.repo.save(blessing);
   }
 
-  findByEvent(eventId: number) {
-    return this.repo.find({
+  async findByEvent(eventId: number, take: number, skip: number) {
+    const [result, total] = await this.repo.findAndCount({
       where: { event: { id: eventId } },
+      take, skip,
       relations: ['payment', 'event'],
     });
+    console.log(result, total);
+    return { data: result, count: total }
   }
 }

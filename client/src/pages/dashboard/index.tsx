@@ -23,11 +23,10 @@ import CenteringContainer from "../../components/CenteringContainer";
 import useLoading from "../../hooks/useLoading";
 
 const Dashboard = () => {
-  const { event } = useEventStore();
   const [data, setData] = useState<IDashboard>();
 
   const getData = async () => {
-    const data = await UtilityService.generateDashboard(event.id);
+    const data = await UtilityService.generateDashboard();
     setData((prev) => data);
   };
 

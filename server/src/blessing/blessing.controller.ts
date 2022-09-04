@@ -27,7 +27,6 @@ export class BlessingController {
   constructor(
     private readonly blessingService: BlessingService,
     private readonly paymentService: PaymentService,
-    @Inject(CACHE_MANAGER) private readonly cacheMenager: Cache,
   ) { }
 
   @Public()
@@ -42,14 +41,7 @@ export class BlessingController {
   @UseGuards(EventGuard)
   @Get()
   @Serialize(BlessingDto)
-  @UseInterceptors(CacheInterceptor)
-  findByEvent(@CurrentEvent() event: Event) {
-    return this.blessingService.findByEvent(event.id);
-  }
-
-  @Get("/:eventid")
-  @Serialize(BlessingDto)
-  SortBlessings(@Param('eventid') eventId: number, @Query('sortBy') sortBy: string) {
-
+  findByEvent(@CurrentEvent() event: Event, @Query() { take, skip }) {
+    return this.blessingService.findByEvent(event.id, take, skip);
   }
 } 

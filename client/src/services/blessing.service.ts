@@ -5,9 +5,9 @@ import axiosInstance from "./axios-instance";
 export class BlessingService {
   static readonly prefix = "/blessing";
 
-  public static async getByEvent(eventId: number) {
+  public static async getByEvent(skip: number, take: number) {
     try {
-      return await (await axiosInstance.get(`${this.prefix}/${eventId}`)).data;
+      return await (await axiosInstance.get(`${this.prefix}?take=${take}&skip=${skip}`)).data;
     } catch (e) {
       showErrorMessage({});
     }

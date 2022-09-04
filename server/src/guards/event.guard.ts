@@ -6,6 +6,6 @@ export class EventGuard implements CanActivate {
     constructor() { }
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest();
-        return Object.entries(request.session.event).length !== 0;
+        return Object.entries(request.session.event = {}).length !== 0;
     }
 }

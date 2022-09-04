@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { EventService } from "../../../../services/event.service";
 import { useEventStore } from "../../../../states/event-store";
 import { Event } from "../../../../types/event";
@@ -17,19 +17,16 @@ import { CardContainer } from "./styles";
 const EventItem: React.FC<{ event: Event }> = ({ event }) => {
   const setEvent = useEventStore((state) => state.setEvent);
   const createdAt = new Date(event.createdAt).toLocaleDateString();
-
+  const navigate = useNavigate();
   const storeEvent = async () => {
     await EventService.store(event);
     setEvent(event);
+    navigate("/dashboard");
   };
 
   return (
     <CardContainer>
-      <Link
-        style={{ textDecoration: "none" }}
-        onClick={storeEvent}
-        to={"/dashboard"}
-      >
+      <Box sx={{ cursor: "pointer" }} onClick={storeEvent}>
         <CardHeader
           title={<Box color="black"> {event.name}</Box>}
           subheader={"Created at: " + createdAt}
@@ -68,7 +65,7 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
             )}
           </Box>
         </Box>
-      </Link>
+      </Box>
     </CardContainer>
   );
 };

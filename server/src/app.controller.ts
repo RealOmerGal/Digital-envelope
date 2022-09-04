@@ -1,27 +1,27 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { DashboardDto } from './dashboard/dto/dashboard.dto';
+import { CurrentEvent } from './decorators/current-event.decorator';
+import { Event } from './event/event.entity';
+import { EventGuard } from './guards/event.guard';
 import { Serialize } from './interceptors/serialize.interceptor';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get('/dashboard/:eventid')
+
+  @UseGuards(EventGuard)
+  @Get('/dashboard/')
   @Serialize(DashboardDto)
-  async generateDashboard(@Param('eventid') eventId: number) {
+  async generateDashboard(@CurrentEvent() event: Event) {
 
     const [paidGuests, totalAmount, averagePerGuest, amountDistribution] = await Promise.all([
-      this.appService.paidGuestsCount(eventId),
-      this.appService.totalAmount(eventId),
-      this.appService.averagePerGuest(eventId),
-      this.appService.amountDistribution(eventId)
+      this.appService.paidGuestsCount(event.id),
+      this.appService.totalAmount(event.id),
+      this.appService.averagePerGuest(event.id),
+      this.appService.amountDistribution(event.id)
     ])
-
-    // const paidGuests = await this.appService.paidGuestsCount(eventId);
-    // const totalAmount = await this.appService.totalAmount(eventId);
-    // const averagePerGuest = await this.appService.averagePerGuest(eventId);
-    // const amountDistribution = await this.appService.amountDistribution(eventId);
     return { paidGuests, totalAmount, averagePerGuest, amountDistribution };
   }
 }
