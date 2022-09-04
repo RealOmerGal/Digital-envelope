@@ -2,10 +2,10 @@ import { showErrorMessage } from "../utils/error-message.util";
 import axiosInstance from "./axios-instance";
 
 export class UtilityService {
-  public static async generateDashboard(eventId: number) {
+  public static async generateDashboard() {
     try {
       return await (
-        await axiosInstance.get(`/dashboard/${eventId}`)
+        await axiosInstance.get('/dashboard/')
       ).data;
     } catch (e) {
       showErrorMessage({});
