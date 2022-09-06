@@ -3,15 +3,9 @@ import {
   Get,
   Post,
   Body,
-  Param,
-  Inject,
-  UseInterceptors,
-  CacheInterceptor,
-  CACHE_MANAGER,
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { Cache } from 'cache-manager';
 import { Public } from '../decorators/public.decorator';
 import { PaymentService } from '../payment/payment.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
@@ -33,15 +27,16 @@ export class BlessingController {
   @Post()
   async create(@Body() dto: CreateBlessingDto) {
     //TODO: do this in a transaction
-    const { total } = dto;
-    const payment = await this.paymentService.createMock(total);
+    const { amount } = dto;
+    const payment = await this.paymentService.createMock(amount);
     return await this.blessingService.create(dto, payment.id);
 
   }
   @UseGuards(EventGuard)
   @Get()
-  @Serialize(BlessingDto)
-  findByEvent(@CurrentEvent() event: Event, @Query() { take, skip }) {
-    return this.blessingService.findByEvent(event.id, take, skip);
+  // @Serialize(BlessingArrayDto)
+  async findByEvent(@CurrentEvent() event: Event, @Query() { take, skip }) {
+    const { total, result } = await this.blessingService.findByEvent(event.id, take, skip);
+    return { count: total, result };
   }
 } 

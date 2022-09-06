@@ -1,9 +1,8 @@
 import { TableCell, TableRow, Typography, Chip } from "@mui/material";
 import React from "react";
-import Blessing from "../../../types/blessing";
 import Swal from "sweetalert2";
 
-const BlessingRow: React.FC<{ blessing: Blessing }> = ({ blessing }) => {
+const BlessingRow: React.FC<any> = ({ blessing }) => {
   const showModal = (by: string, text: string) => {
     Swal.fire({ title: by + ":", text, confirmButtonColor: "#5048E5" });
   };
@@ -11,7 +10,6 @@ const BlessingRow: React.FC<{ blessing: Blessing }> = ({ blessing }) => {
   return (
     <TableRow
       hover
-      key={blessing.id}
       onClick={() => showModal(blessing.createdBy, blessing.text)}
     >
       <TableCell>
@@ -34,7 +32,7 @@ const BlessingRow: React.FC<{ blessing: Blessing }> = ({ blessing }) => {
         <Typography>{blessing.text}</Typography>
       </TableCell>
       <TableCell align="center">
-        <Chip color="success" label={blessing.total} />
+        <Chip color="success" label={blessing.payment.amount} />
       </TableCell>
     </TableRow>
   );

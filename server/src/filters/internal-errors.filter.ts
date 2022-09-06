@@ -7,7 +7,7 @@ import { Logger } from 'winston';
   Catch all non-logic errors (Typeorm) TODO: add external payments error
 */
 
-@Catch(TypeORMError)
+@Catch(TypeORMError, TypeError)
 export class InternalServerErrorFilter implements ExceptionFilter {
   constructor(@Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger) { }
   catch(exception: TypeORMError, host: ArgumentsHost) {

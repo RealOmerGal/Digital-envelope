@@ -13,8 +13,8 @@ export class PaymentService {
     return this.repo.findOneBy({ id });
   }
   //TODO: Delete this later after implementing real payments
-  createMock(total: number) {
-    const payment = this.repo.create({ amount: total, platform: PaymentPlatform.PAYPAL, ref: '123123123' });
+  createMock(amount: number) {
+    const payment = this.repo.create({ amount, platform: PaymentPlatform.PAYPAL, ref: '123123123' });
     return this.repo.save(payment);
   }
   // create({ by, total, eventName }: CreatePaymentDto, res: Response) {

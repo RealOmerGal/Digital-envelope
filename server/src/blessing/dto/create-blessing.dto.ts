@@ -13,5 +13,5 @@ export class CreateBlessingDto {
 
   @Type(() => Number)
   @IsPositive()
-  total: number
+  amount: number
 }
