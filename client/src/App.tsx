@@ -2,14 +2,14 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import CreateBlessing from "./pages/create-blessing";
 import HomePage from "./pages/home";
-import { CircularProgress, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import { Suspense, useEffect } from "react";
 import { useUserStore } from "./states/user-store";
 import React from "react";
 import { AuthService } from "./services/auth.service";
 import { RequireAuth } from "./components/RequireAuth";
-import CenteringContainer from "./components/CenteringContainer";
+import Loading from "./components/Loading";
 
 const App = () => {
   const ShowEvents = React.lazy(() => import("./pages/show-events"));
@@ -95,17 +95,7 @@ const App = () => {
             <Route
               key={path}
               path={path}
-              element={
-                <Suspense
-                  fallback={
-                    <CenteringContainer sx={{ height: "90vh" }}>
-                      <CircularProgress />
-                    </CenteringContainer>
-                  }
-                >
-                  {element}
-                </Suspense>
-              }
+              element={<Suspense fallback={<Loading />}>{element}</Suspense>}
             />
           );
         })}

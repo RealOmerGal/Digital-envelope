@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import CenteringContainer from "../../components/CenteringContainer";
 import { BlessingService } from "../../services/blessing.service";
-import { showSuccessMessage } from "../../utils/success-message.util";
 
 const SubmitBlessing: React.FC<any> = () => {
   /*
@@ -27,7 +26,6 @@ const SubmitBlessing: React.FC<any> = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // fetchEvent();
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("eventName") ?? "";
     setEventName((prev) => name);
@@ -35,12 +33,7 @@ const SubmitBlessing: React.FC<any> = () => {
 
   const handleSubmit = async () => {
     // setBlessing({ ...values, eventId });
-
-    BlessingService.create(values);
-    showSuccessMessage({
-      title: "Thank you!",
-      successString: "Your blessings was successfully sent",
-    });
+    await BlessingService.create(values);
     clearForm();
   };
 
@@ -50,7 +43,7 @@ const SubmitBlessing: React.FC<any> = () => {
       createdBy: "",
       eventId,
       text: "",
-      total: 0,
+      amount: 0,
     }
   );
 
@@ -77,9 +70,9 @@ const SubmitBlessing: React.FC<any> = () => {
           <TextField
             fullWidth
             margin="normal"
-            name="total"
+            name="amount"
             label="Amount to pay (USD $)"
-            value={values.total}
+            value={values.amount}
             onChange={onChange}
             inputProps={{ inputMode: "numeric" }}
           />

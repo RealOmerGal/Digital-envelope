@@ -3,7 +3,7 @@ export interface ICreateBlessing {
   text: string;
   createdBy: string;
   eventId: number;
-  total: number;
+  amount: number;
 }
 
 //The blessing entity in the server

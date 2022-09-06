@@ -8,10 +8,6 @@ export class CurrentUserMiddleware implements NestMiddleware {
 
     async use(req: any, res: any, next: (error?: any) => void) {
         const { user } = req.session || {};
-        if (user) {
-            console.log(user.id);
-        }
-
         next();
     }
 }

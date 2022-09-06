@@ -1,6 +1,7 @@
 import { Expose, Transform } from 'class-transformer';
 
 export class BlessingDto {
+
   @Expose()
   createdBy: string;
 
@@ -13,11 +14,7 @@ export class BlessingDto {
   @Expose()
   createdAt: Date;
 
-  @Transform(({ obj }) => obj.event.id)
-  @Expose()
-  eventId: number;
-
   @Transform(({ obj }) => obj.payment.amount)
   @Expose()
-  paymentAmount: number;
+  amount: number;
 }

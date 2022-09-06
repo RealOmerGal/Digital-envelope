@@ -4,5 +4,5 @@ import { IsPositive } from "class-validator";
 export class CreatePaymentDto {
     @Type(() => Number)
     @IsPositive()
-    total: number
+    amount: number
 }

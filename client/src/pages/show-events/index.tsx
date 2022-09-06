@@ -1,8 +1,9 @@
-import { Button, CircularProgress, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CenteringContainer from "../../components/CenteringContainer";
+import Loading from "../../components/Loading";
 import SideBar from "../../components/sidebar";
 import useLoading from "../../hooks/useLoading";
 import { EventService } from "../../services/event.service";
@@ -26,12 +27,7 @@ const ShowEvents: React.FC<any> = () => {
   const { activateFunc: fetchEvents, loading } = useLoading(getEvents);
 
   const renderContent = () => {
-    if (loading)
-      return (
-        <CenteringContainer sx={{ height: "80vh" }}>
-          <CircularProgress />
-        </CenteringContainer>
-      );
+    if (loading) return <Loading />;
 
     if (events.length > 0) {
       return (

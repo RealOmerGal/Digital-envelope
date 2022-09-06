@@ -1,13 +1,5 @@
-import {
-  Box,
-  Grid,
-  LinearProgress,
-  Typography,
-  Stack,
-  CircularProgress,
-} from "@mui/material";
+import { Box, Grid, LinearProgress, Typography, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useEventStore } from "../../states/event-store";
 import IDashboard from "../../types/dashboard";
 import DashboardCard from "./components/item";
 import { StatBox, StyledGrid } from "./styles";
@@ -21,6 +13,7 @@ import { UtilityService } from "../../services/util.service";
 import DashboardChart from "./components/chart";
 import CenteringContainer from "../../components/CenteringContainer";
 import useLoading from "../../hooks/useLoading";
+import Loading from "../../components/Loading";
 
 const Dashboard = () => {
   const [data, setData] = useState<IDashboard>();
@@ -36,12 +29,7 @@ const Dashboard = () => {
   const { activateFunc: fetchData, loading } = useLoading(getData);
 
   const renderContent = () => {
-    if (loading)
-      return (
-        <CenteringContainer sx={{ height: "80vh" }}>
-          <CircularProgress />
-        </CenteringContainer>
-      );
+    if (loading) return <Loading />;
 
     // If theres no blessings yet
     if (data && data?.amountDistribution.length < 1) {
