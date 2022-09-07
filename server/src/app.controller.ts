@@ -19,7 +19,7 @@ export class AppController {
     const [paidGuests, totalAmount, averagePerGuest, amountDistribution] = await Promise.all([
       this.appService.paidGuestsCount(event.id),
       this.appService.totalAmount(event.id),
-      this.appService.averagePerGuest(event.id),
+      this.appService.averagePerGuest(event),
       this.appService.amountDistribution(event.id)
     ])
     return { paidGuests, totalAmount, averagePerGuest, amountDistribution };

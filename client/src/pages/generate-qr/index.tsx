@@ -29,7 +29,7 @@ export default function GenerateQr() {
           <Typography variant="h2" textAlign="center">
             {event.name}
           </Typography>
-          <img src={qr} alt="QR_CODE" title="QR" />
+          <img src={qr} alt="LOADING_QR" title="QR" />
           <Typography variant="caption">
             Scan the QR code to participate
           </Typography>

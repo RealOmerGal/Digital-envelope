@@ -1,6 +1,5 @@
 import axiosInstance from "./axios-instance";
 import { serverUrl } from "../config";
-import { showErrorMessage } from "../utils/error-message.util";
 
 export class AuthService {
   static readonly prefix = "/auth";
@@ -20,7 +19,6 @@ export class AuthService {
       await axiosInstance.post(`${this.prefix}/logout`);
       return true;
     } catch (e) {
-      showErrorMessage({});
       return false;
     }
   }

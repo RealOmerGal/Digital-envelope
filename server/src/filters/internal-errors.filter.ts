@@ -4,7 +4,7 @@ import { TypeORMError } from 'typeorm';
 import { Logger } from 'winston';
 
 /*
-  Catch all non-logic errors (Typeorm) TODO: add external payments error
+  Catch all non-logic errors
 */
 
 @Catch(TypeORMError, TypeError)

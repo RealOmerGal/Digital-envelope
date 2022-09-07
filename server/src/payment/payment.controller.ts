@@ -1,7 +1,5 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
-import { Response } from 'express';
-import { Public } from '../decorators/public.decorator';
-import { CreatePaymentDto } from './dto/create-payment.dto';
+import { Controller, Get, Param } from '@nestjs/common';
+
 import { PaymentService } from './payment.service';
 
 @Controller('payment')

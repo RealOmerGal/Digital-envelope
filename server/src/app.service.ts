@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
+import { Event } from './event/event.entity';
 
 @Injectable()
 export class AppService {
@@ -38,7 +39,7 @@ export class AppService {
     return res[0];
   }
 
-  async averagePerGuest(eventId: number) {
+  async averagePerGuest(event: Event) {
     const res = await this.entityManager.query(
       `SELECT AVG(payment.amount::numeric)::int
        FROM payment
@@ -47,22 +48,30 @@ export class AppService {
        INNER JOIN event
        ON blessing."eventId"  = event.id
        WHERE event.id = $1`,
-      [eventId],
+      [event.id],
     );
-    // const similarEvents = await this.entityManager.query(
-    //   `SELECT AVG(payment.amount::numeric)::int
-    //   FROM payment
-    //   INNER JOIN blessing
-    //   ON blessing."paymentId" = payment.id
-    //   INNER JOIN event
-    //   ON blessing."eventId"  = event.id
-    //   WHERE event.type = $1
-    //   AND event."estimatedGuests" BETWEEN $2 AND $3
-    //   AND EXTRACT(YEAR FROM event."createdAt") = $4
-    //   `
-    // )
-    return res[0];
+
+    const similarEventsAverageQuery = await this.entityManager.query(
+      `SELECT AVG(payment.amount::numeric)::int
+      FROM payment
+      INNER JOIN blessing
+      ON blessing."paymentId" = payment.id
+      INNER JOIN event
+      ON blessing."eventId"  = event.id
+      WHERE event.type = $1
+      AND event."estimatedGuests" BETWEEN $2 AND $3      
+      AND EXTRACT(YEAR FROM event."createdAt") = $4
+      `, [event.type, Math.round(0.75 * event.estimatedGuests), Math.round(1.25 * event.estimatedGuests), new Date(event.createdAt).getFullYear()]
+    )
+
+    //Calc average diffrancial
+    const similarEventsAverage = similarEventsAverageQuery[0].avg;
+    const { avg } = res[0];
+    const comparedToSimilar = avg / similarEventsAverage * 100;
+
+    return { avg, comparedToSimilar };
   }
+
   async amountDistribution(eventId: number) {
     const res = await this.entityManager.query(
       `SELECT COUNT(payment.amount), payment.amount FROM payment

@@ -1,5 +1,8 @@
 interface IDashboard {
-  averagePerGuest: number;
+  averagePerGuest: {
+    avg: number;
+    comparedToSimilar: number;
+  };
   paidGuests: {
     current: number;
     max: number;

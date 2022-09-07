@@ -25,8 +25,9 @@ export class EventController {
   constructor(private readonly eventService: EventService) { }
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto, @CurrentUser() user: User) {
-    return this.eventService.create(createEventDto, user.id);
+  async create(@Body() createEventDto: CreateEventDto, @CurrentUser() user: User, @Session() session: any) {
+    const newEvent = await this.eventService.create(createEventDto, user.id);
+    return session.event = newEvent;
   }
 
   @Get('/user')
