@@ -1,6 +1,6 @@
 import { ReactElement, useEffect } from "react";
 import { serverUrl } from "../config";
-import { useUserStore } from "../states/user-store";
+import { useUserStore } from "../stores/user-store";
 
 type Props = {
   children: ReactElement;

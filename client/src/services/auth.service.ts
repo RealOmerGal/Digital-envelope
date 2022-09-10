@@ -14,12 +14,9 @@ export class AuthService {
   public static login(): void {
     window.location.href = serverUrl + `${this.prefix}/google`;
   }
-  public static async logout(): Promise<boolean> {
+  public static async logout(): Promise<void> {
     try {
       await axiosInstance.post(`${this.prefix}/logout`);
-      return true;
-    } catch (e) {
-      return false;
-    }
+    } catch (e) { }
   }
 }

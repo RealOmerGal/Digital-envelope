@@ -37,8 +37,9 @@ export class EventController {
 
   @UseGuards(EventGuard)
   @Put()
-  update(@CurrentEvent() event: Event, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.update(event.id, updateEventDto);
+  async update(@CurrentEvent() event: Event, @Body() updateEventDto: UpdateEventDto, @Session() session: any) {
+    const updatedEvent = await this.eventService.update(event.id, updateEventDto);
+    return session.event = updatedEvent;
   }
 
   @UseGuards(EventGuard)
@@ -48,9 +49,9 @@ export class EventController {
   }
 
   @Delete('/:id')
-  remove(@Param('id') id: string, @Session() session: any) {
+  async remove(@Param('id') id: string, @Session() session: any) {
+    await this.eventService.remove(+id);
     if (session.eventId === id) session.event = null;
-    return this.eventService.remove(+id);
   }
 
   @Post('/store')

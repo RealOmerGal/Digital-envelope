@@ -14,7 +14,7 @@ import CenteringContainer from "../../components/CenteringContainer";
 import useLoading from "../../hooks/useLoading";
 import Loading from "../../components/Loading";
 import SimilarEventStat from "./components/SimilarEventStat";
-
+import formatter from "../../utils/currency-formatter.util";
 const Dashboard = () => {
   const [data, setData] = useState<IDashboard>();
 
@@ -53,7 +53,7 @@ const Dashboard = () => {
                   title="Average Per Guest"
                   iconColor="#D14343"
                   icon={<InsertChartIcon />}
-                  mainStat={data!.averagePerGuest.avg + "$"}
+                  mainStat={formatter.format(data!.averagePerGuest.avg)}
                 >
                   <StatBox>
                     <SimilarEventStat
@@ -89,7 +89,10 @@ const Dashboard = () => {
                   title="Money Collected"
                   iconColor="#14B8A6"
                   icon={<AttachMoneyIcon />}
-                  mainStat={data!.totalAmount + "$"}
+                  //TODO: Find a nicer way to do this
+                  mainStat={formatter.format(
+                    +data!.totalAmount.substring(1).replace(",", "")
+                  )}
                 ></DashboardCard>
               </StyledGrid>
               <Grid item lg={8} sm={12} xl={8} xs={12}>

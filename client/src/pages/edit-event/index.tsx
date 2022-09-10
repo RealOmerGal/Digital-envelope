@@ -16,15 +16,14 @@ import {
 import SideBar from "../../components/sidebar";
 import DashboardToolbar from "../../components/toolbar";
 import { useForm } from "../../hooks/useForm";
-import { useEventStore } from "../../states/event-store";
+import { useEventStore } from "../../stores/event-store";
 import { Event, EventTypes } from "../../types/event";
 import { ButtonContainer, StyledGridItem } from "./styles";
-import { EventService } from "../../services/event.service";
 import { showConfirmMessage } from "../../utils/confirm-message.util";
 import { showSuccessMessage } from "../../utils/success-message.util";
 
 const EditEvent = () => {
-  const { event, setEvent } = useEventStore();
+  const { event, updateEvent } = useEventStore();
 
   const handleSubmit = () => {
     showConfirmMessage({
@@ -32,8 +31,7 @@ const EditEvent = () => {
       text: "Are you sure you want to save youe changes?",
       handleYes: async () => {
         try {
-          const newEventData = await EventService.update(values!);
-          setEvent(newEventData);
+          await updateEvent(values!);
           showSuccessMessage({ title: "Changes saved" });
         } catch (e) {}
       },

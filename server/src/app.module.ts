@@ -47,14 +47,14 @@ const cookieSession = require('cookie-session');
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        const url = config.get<string>('DATABASE_URL');
+        // const url = config.get<string>('DATABASE_URL');
         return {
           type: 'postgres',
-          url,
+          port: config.get('POSTGRES_PORT') ?? 5432,
+          username: config.get('POSTGRES_USER'),
+          password: config.get('POSTGRES_PASSWORD'),
           synchronize: true,
-          ssl: {
-            rejectUnauthorized: false,
-          },
+          ssl: false,
           entities: [Blessing, Event, User, Payment],
         };
       },

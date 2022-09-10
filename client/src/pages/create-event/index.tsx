@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "../../hooks/useForm";
-import { useEventStore } from "../../states/event-store";
+import { useEventStore } from "../../stores/event-store";
 import { EventTypes, ICreateEvent } from "../../types/event";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,12 +17,11 @@ import {
 } from "@mui/material";
 import CenteringContainer from "../../components/CenteringContainer";
 import SideBar from "../../components/sidebar";
-import { EventService } from "../../services/event.service";
-import { useUserStore } from "../../states/user-store";
+import { useUserStore } from "../../stores/user-store";
 import { showConfirmMessage } from "../../utils/confirm-message.util";
 
 const CreateEvent: React.FC<any> = () => {
-  const { setEvent } = useEventStore();
+  const { createEvent } = useEventStore();
   const { user } = useUserStore();
   const navigate = useNavigate();
 
@@ -30,8 +29,7 @@ const CreateEvent: React.FC<any> = () => {
     showConfirmMessage({
       text: "Your new event will be created immediately",
       handleYes: async () => {
-        const newEvent = await EventService.create(values);
-        setEvent(newEvent);
+        await createEvent(values);
         navigate("/dashboard");
       },
     });

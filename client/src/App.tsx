@@ -5,9 +5,8 @@ import HomePage from "./pages/home";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import { Suspense, useEffect } from "react";
-import { useUserStore } from "./states/user-store";
+import { useUserStore } from "./stores/user-store";
 import React from "react";
-import { AuthService } from "./services/auth.service";
 import { RequireAuth } from "./components/RequireAuth";
 import Loading from "./components/Loading";
 
@@ -18,13 +17,10 @@ const App = () => {
   const Dashboard = React.lazy(() => import("./pages/dashboard"));
   const CreateEvent = React.lazy(() => import("./pages/create-event"));
   const EditEvent = React.lazy(() => import("./pages/edit-event"));
-  const { user, setUser } = useUserStore();
-  const fetchUser = async () => {
-    const data = await AuthService.getUser();
-    setUser(data);
-  };
+  const { user, storeUser } = useUserStore();
+
   useEffect(() => {
-    if (user.id === "") fetchUser();
+    if (user.id === "") storeUser();
   }, []);
 
   const routes = [

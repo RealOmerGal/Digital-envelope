@@ -7,7 +7,7 @@ interface IDashboard {
     current: number;
     max: number;
   };
-  totalAmount: number;
+  totalAmount: string;
   amountDistribution: Array<{
     amount: number;
     count: number

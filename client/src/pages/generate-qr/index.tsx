@@ -1,10 +1,9 @@
 import { ArrowBack } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CenteringContainer from "../../components/CenteringContainer";
 import { UtilityService } from "../../services/util.service";
-import { useEventStore } from "../../states/event-store";
+import { useEventStore } from "../../stores/event-store";
 import { StyledBox, StyledPaper } from "./styles";
 
 export default function GenerateQr() {
