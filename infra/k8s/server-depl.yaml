@@ -22,19 +22,24 @@ spec:
             - name: CLIENT_ID
               value: "277026531583-scjcgic2kb81fa6b76mljrn523e77lca.apps.googleusercontent.com"
             - name: DATABASE_URL
-              value: "postgres://postgres-srv:5432"
+              value: "postgres://root:password@postgres-srv:5432/digital-envelope?sslmode=disable"
             - name: SESSION_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: session-secret
-                  key: SESSION_SECRET
-            - name: COOKIE_KEY
-              value: ASJKKkasdSSaasLLlMM
+              value: "abcde"
             - name: CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: google-secret
-                  key: CLIENT_SECRET
+              value: "bbcdee"
+            - name: COOKIE_KEY
+              value: "abbcs"
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: session-secret
+            #       key: session-secret
+            # - name: COOKIE_KEY
+            #   value: ASJKKkasdSSaasLLlMM
+            # - name: CLIENT_SECRET
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: google-secret
+            #       key: client-secret
 ---
 apiVersion: v1
 kind: Service
