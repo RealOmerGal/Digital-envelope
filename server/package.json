@@ -37,11 +37,11 @@
     "nest-winston": "^1.7.0",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
-    "paypal-rest-sdk": "^1.8.1",
     "pg": "^8.7.3",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.5.5",
+    "stripe": "^10.8.0",
     "typeorm": "^0.3.7",
     "winston": "^3.8.1"
   },

@@ -2,21 +2,17 @@ import axiosInstance from "./axios-instance";
 import { serverUrl } from "../config";
 
 export class AuthService {
-  static readonly prefix = "/auth";
+  private static prefix = "/auth";
 
   public static async getUser() {
-    try {
-      return await (
-        await axiosInstance.get(`${this.prefix}/currentuser`)
-      ).data;
-    } catch (e) { }
+    return await (
+      await axiosInstance.get(`${this.prefix}/currentuser`)
+    ).data;
   }
   public static login(): void {
     window.location.href = serverUrl + `${this.prefix}/google`;
   }
   public static async logout(): Promise<void> {
-    try {
-      await axiosInstance.post(`${this.prefix}/logout`);
-    } catch (e) { }
+    await axiosInstance.post(`${this.prefix}/logout`);
   }
 }

@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "../../hooks/useForm";
 import { useEventStore } from "../../stores/event-store";
-import { EventTypes, ICreateEvent } from "../../types/event";
+import { EventTypes, CreateEventDto } from "../../types/event";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
@@ -19,10 +19,11 @@ import CenteringContainer from "../../components/CenteringContainer";
 import SideBar from "../../components/sidebar";
 import { useUserStore } from "../../stores/user-store";
 import { showConfirmMessage } from "../../utils/confirm-message.util";
+import { addPaymentProfileMessage } from "../../utils/add-payment-profile.util";
 
 const CreateEvent: React.FC<any> = () => {
   const { createEvent } = useEventStore();
-  const { user } = useUserStore();
+  const { user, storeUpdatedUser } = useUserStore();
   const navigate = useNavigate();
 
   const handleSubmit = async () => {
@@ -34,8 +35,18 @@ const CreateEvent: React.FC<any> = () => {
       },
     });
   };
-
-  const { onChange, onSubmit, values } = useForm<ICreateEvent>(handleSubmit, {
+  const updateUsersPaymentProfile = async () => {
+    const updatedUser = await addPaymentProfileMessage();
+    if (updatedUser !== null) {
+      storeUpdatedUser(updatedUser);
+    }
+  };
+  useEffect(() => {
+    if (!user.paymentProfileId) {
+      updateUsersPaymentProfile();
+    }
+  }, []);
+  const { onChange, onSubmit, values } = useForm<CreateEventDto>(handleSubmit, {
     estimatedGuests: 0,
     name: "",
     type: EventTypes.Other,

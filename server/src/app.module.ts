@@ -47,14 +47,18 @@ const cookieSession = require('cookie-session');
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        // const url = config.get<string>('DATABASE_URL');
+        const url = config.get<string>('DATABASE_URL');
         return {
           type: 'postgres',
-          port: config.get('POSTGRES_PORT') ?? 5432,
-          username: config.get('POSTGRES_USER'),
-          password: config.get('POSTGRES_PASSWORD'),
+          url,
+          // database: config.get('POSTGRES_DB'),
+          // username: config.get('POSTGRES_USER'),
+          // password: config.get('POSTGRES_PASSWORD'),
           synchronize: true,
-          ssl: false,
+          // ssl: {false},
+          ssl: {
+            rejectUnauthorized: false,
+          },
           entities: [Blessing, Event, User, Payment],
         };
       },
@@ -73,12 +77,12 @@ const cookieSession = require('cookie-session');
     },
     {
       provide: APP_FILTER,
-      useClass: InternalServerErrorFilter
-    }
+      useClass: InternalServerErrorFilter,
+    },
   ],
 })
 export class AppModule {
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer

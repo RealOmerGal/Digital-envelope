@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
-import { ICreateBlessing } from "../../types/blessing";
+import { CreateBlessingDto } from "../../types/blessing";
 import {
   Box,
   Button,
@@ -14,11 +14,6 @@ import CenteringContainer from "../../components/CenteringContainer";
 import { BlessingService } from "../../services/blessing.service";
 
 const SubmitBlessing: React.FC<any> = () => {
-  /*
-    TODO: when payments will be implmeneted, need to save blessing to global store, and use it in the payment page,
-          some of the code alread exists but need to be uncommnected
-  */
-  // const { setBlessing, blessing } = useBlessingStore();
   const eventId = parseInt(useParams().eventid!);
 
   const [eventName, setEventName] = useState("");
@@ -37,7 +32,7 @@ const SubmitBlessing: React.FC<any> = () => {
     clearForm();
   };
 
-  const { onChange, onSubmit, values, clearForm } = useForm<ICreateBlessing>(
+  const { onChange, onSubmit, values, clearForm } = useForm<CreateBlessingDto>(
     handleSubmit,
     {
       createdBy: "",

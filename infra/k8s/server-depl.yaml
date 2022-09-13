@@ -15,24 +15,26 @@ spec:
       containers:
         - name: server
           image: omergal/digital-envelope-server
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           env:
             - name: CLIENT_ID
               value: "277026531583-scjcgic2kb81fa6b76mljrn523e77lca.apps.googleusercontent.com"
             - name: DATABASE_URL
               value: "postgres://postgres-srv:5432"
-
-            # - name: SESSION_SECRET
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: session-secret
-            #       key: SESSION_SECRET
-            # - name: COOKIE_KEY
-            #   value: ASJKKkasdSSaasLLlMM
-            # - name: CLIENT_SECRET
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: google-secret
-            #       key: CLIENT_SECRET
+            - name: SESSION_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: session-secret
+                  key: SESSION_SECRET
+            - name: COOKIE_KEY
+              value: ASJKKkasdSSaasLLlMM
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: google-secret
+                  key: CLIENT_SECRET
 ---
 apiVersion: v1
 kind: Service

@@ -17,10 +17,10 @@ const App = () => {
   const Dashboard = React.lazy(() => import("./pages/dashboard"));
   const CreateEvent = React.lazy(() => import("./pages/create-event"));
   const EditEvent = React.lazy(() => import("./pages/edit-event"));
-  const { user, storeUser } = useUserStore();
+  const { user, storeCurrentUser } = useUserStore();
 
   useEffect(() => {
-    if (user.id === "") storeUser();
+    if (user.id === "") storeCurrentUser();
   }, []);
 
   const routes = [

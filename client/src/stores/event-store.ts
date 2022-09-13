@@ -1,14 +1,15 @@
 import create from "zustand";
 import { EventService } from "../services/event.service";
-import { Event, EventTypes, ICreateEvent } from "../types/event";
+import { Event, EventTypes, CreateEventDto } from "../types/event";
+import { showErrorMessage } from "../utils/error-message.util";
 
 interface EventState {
   event: Event;
   fetchEvent: (callback?: any) => Promise<void>;
   storeEvent: (event: Event) => Promise<void>;
   deleteEvent: (eventId: number) => Promise<void>;
-  createEvent: (CreateEventDto: ICreateEvent) => Promise<void>;
-  updateEvent: (event: Event) => Promise<void>
+  createEvent: (CreateEventDto: CreateEventDto) => Promise<void>;
+  updateEvent: (event: Event) => Promise<void>;
 }
 
 const initDate = new Date();
@@ -26,26 +27,37 @@ const initEvent: Event = {
 const useStore = create<EventState>((set) => ({
   event: initEvent,
   fetchEvent: async (callback?: any) => {
-    const event = await EventService.current(callback);
-    set(({ event }))
+    try {
+      const event = await EventService.current();
+      set({ event });
+    } catch (e) {
+      showErrorMessage({ callback });
+    }
   },
   storeEvent: async (event: Event) => {
-    await EventService.store(event);
-    set({ event })
+    try {
+      await EventService.store(event);
+      set({ event });
+    } catch (e) {}
   },
-  createEvent: async (CreateEventDto: ICreateEvent) => {
-    const event = await EventService.create(CreateEventDto);
-    set({ event })
+  createEvent: async (CreateEventDto: CreateEventDto) => {
+    try {
+      const event = await EventService.create(CreateEventDto);
+      set({ event });
+    } catch (e) {}
   },
   updateEvent: async (event: Event): Promise<void> => {
-    const updatedEvent = await EventService.update(event);
-    set({ event: updatedEvent });
+    try {
+      const updatedEvent = await EventService.update(event);
+      set({ event: updatedEvent });
+    } catch (e) {}
   },
   deleteEvent: async (eventId: number) => {
-    await EventService.delete(eventId);
-    set(({ event: initEvent }))
+    try {
+      await EventService.delete(eventId);
+      set({ event: initEvent });
+    } catch (e) {}
   },
 }));
 
 export { useStore as useEventStore };
-;

@@ -8,7 +8,7 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import GroupIcon from "@mui/icons-material/Group";
 import DashboardToolbar from "../../components/toolbar";
 import SideBar from "../../components/sidebar";
-import { UtilityService } from "../../services/util.service";
+import { AppService } from "../../services/app.service";
 import DashboardChart from "./components/chart";
 import CenteringContainer from "../../components/CenteringContainer";
 import useLoading from "../../hooks/useLoading";
@@ -19,7 +19,7 @@ const Dashboard = () => {
   const [data, setData] = useState<IDashboard>();
 
   const getData = async () => {
-    const data = await UtilityService.generateDashboard();
+    const data = await AppService.generateDashboard();
     setData((prev) => data);
   };
 

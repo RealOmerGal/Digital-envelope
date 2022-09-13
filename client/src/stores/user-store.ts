@@ -4,8 +4,9 @@ import User from "../types/user";
 
 interface UserStore {
   user: User;
-  storeUser: () => Promise<void>;
+  storeCurrentUser: () => Promise<void>;
   clearUser: () => Promise<void>;
+  storeUpdatedUser: (user: User) => void;
 }
 const initState: User = {
   email: "",
@@ -16,13 +17,20 @@ const initState: User = {
 
 const useStore = create<UserStore>((set) => ({
   user: initState,
-  storeUser: async () => {
-    const user = await AuthService.getUser();
+  storeCurrentUser: async () => {
+    try {
+      const user = await AuthService.getUser();
+      set({ user });
+    } catch (e) {}
+  },
+  storeUpdatedUser: (user: User) => {
     set({ user });
   },
   clearUser: async () => {
-    await AuthService.logout();
-    set(({ user: initState }))
+    try {
+      await AuthService.logout();
+      set({ user: initState });
+    } catch (e) {}
   },
 }));
 

@@ -31,9 +31,6 @@ const HomePage = () => {
       <InnerContainer>
         <Header>Digital Envelope</Header>
         <Box>
-          <SpacedButton variant="outlined" onClick={handleLogin}>
-            Log In
-          </SpacedButton>
           <SpacedButton variant="contained" onClick={handleLogin}>
             Get started
           </SpacedButton>

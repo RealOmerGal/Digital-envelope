@@ -8,7 +8,6 @@ data:
   POSTGRES_DB: digital-envelope
   POSTGRES_USER: root
   POSTGRES_PASSWORD: password
-
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -2,7 +2,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CenteringContainer from "../../components/CenteringContainer";
-import { UtilityService } from "../../services/util.service";
+import { AppService } from "../../services/app.service";
 import { useEventStore } from "../../stores/event-store";
 import { StyledBox, StyledPaper } from "./styles";
 
@@ -10,7 +10,7 @@ export default function GenerateQr() {
   const { event } = useEventStore();
   const navigate = useNavigate();
 
-  const qr = UtilityService.generateQr(
+  const qr = AppService.generateQr(
     `${import.meta.env.VITE_CLIENT_URL}/blessings/${event.id}`,
     event.name
   );

@@ -13,7 +13,7 @@ export const RequireAuth = (props: Props) => {
     if (user.id === "") {
       window.location.replace(`${serverUrl}/auth/google`);
     }
-  });
+  }, []);
 
   return props.children;
 };
