@@ -1,8 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum PaymentPlatform {
-  PAYPAL = 'paypal',
   STRIPE = 'stripe',
+  PAYPAL = 'paypal',
 }
 
 @Entity()

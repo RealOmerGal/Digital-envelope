@@ -8,20 +8,19 @@ import { Serialize } from './interceptors/serialize.interceptor';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
-
+  constructor(private readonly appService: AppService) {}
 
   @UseGuards(EventGuard)
   @Get('/dashboard/')
   @Serialize(DashboardDto)
   async generateDashboard(@CurrentEvent() event: Event) {
-
-    const [paidGuests, totalAmount, averagePerGuest, amountDistribution] = await Promise.all([
-      this.appService.paidGuestsCount(event.id),
-      this.appService.totalAmount(event.id),
-      this.appService.averagePerGuest(event.id),
-      this.appService.amountDistribution(event.id)
-    ])
+    const [paidGuests, totalAmount, averagePerGuest, amountDistribution] =
+      await Promise.all([
+        this.appService.paidGuestsCount(event.id),
+        this.appService.totalAmount(event.id),
+        this.appService.averagePerGuest(event),
+        this.appService.amountDistribution(event.id),
+      ]);
     return { paidGuests, totalAmount, averagePerGuest, amountDistribution };
   }
 }

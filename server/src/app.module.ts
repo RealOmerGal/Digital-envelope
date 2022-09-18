@@ -51,7 +51,12 @@ const cookieSession = require('cookie-session');
         return {
           type: 'postgres',
           url,
+          // database: config.get('POSTGRES_DB'),
+          // username: config.get('POSTGRES_USER'),
+          // password: config.get('POSTGRES_PASSWORD'),
           synchronize: true,
+
+          // ssl: {false},
           ssl: {
             rejectUnauthorized: false,
           },
@@ -73,12 +78,12 @@ const cookieSession = require('cookie-session');
     },
     {
       provide: APP_FILTER,
-      useClass: InternalServerErrorFilter
-    }
+      useClass: InternalServerErrorFilter,
+    },
   ],
 })
 export class AppModule {
-  constructor(private configService: ConfigService) { }
+  constructor(private configService: ConfigService) {}
 
   configure(consumer: MiddlewareConsumer) {
     consumer

@@ -8,25 +8,23 @@ import {
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { EventService } from "../../../../services/event.service";
-import { useEventStore } from "../../../../states/event-store";
+import { useNavigate } from "react-router-dom";
+import { useEventStore } from "../../../../stores/event-store";
 import { Event } from "../../../../types/event";
 import { CardContainer } from "./styles";
 
 const EventItem: React.FC<{ event: Event }> = ({ event }) => {
-  const setEvent = useEventStore((state) => state.setEvent);
+  const { storeEvent } = useEventStore();
   const createdAt = new Date(event.createdAt).toLocaleDateString();
   const navigate = useNavigate();
-  const storeEvent = async () => {
-    await EventService.store(event);
-    setEvent(event);
+  const handleItemClick = async () => {
+    await storeEvent(event);
     navigate("/dashboard");
   };
 
   return (
     <CardContainer>
-      <Box sx={{ cursor: "pointer" }} onClick={storeEvent}>
+      <Box sx={{ cursor: "pointer" }} onClick={handleItemClick}>
         <CardHeader
           title={<Box color="black"> {event.name}</Box>}
           subheader={"Created at: " + createdAt}

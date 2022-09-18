@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEventStore } from "../../../../states/event-store";
+import { useEventStore } from "../../../../stores/event-store";
 import { SpacedListItem } from "./styles";
 
 export interface NavItemProps {

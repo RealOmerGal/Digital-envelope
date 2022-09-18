@@ -13,13 +13,13 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error: any) => {
-    if (error.response.status === 401 || 403) {
+    if (error.response.status === 403 || error.response.status === 401) {
       showErrorMessage({
         errorString: "Your login session has expired, please log in again",
         callback: () => (window.location.href = `${serverUrl}/auth/google`),
       });
-    } else if (error.response.status === 500) {
-      showErrorMessage({ errorString: error });
+    } else {
+      showErrorMessage({ errorString: error.response.data.message });
     }
     return Promise.reject(error);
   }

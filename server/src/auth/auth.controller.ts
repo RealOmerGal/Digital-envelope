@@ -56,6 +56,6 @@ export class AuthController {
   @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
   logout(@Session() session: any) {
-    session.user = null;
+    session = null;
   }
 }

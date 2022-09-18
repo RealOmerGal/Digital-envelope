@@ -26,7 +26,6 @@ const ShowBlessings = () => {
   const [blessings, setBlessings] = useState<Blessing[]>([]);
 
   useEffect(() => {
-    console.log("useEffect");
     fetchBlessings();
   }, [page, take]);
 

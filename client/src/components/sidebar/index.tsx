@@ -21,7 +21,7 @@ import { Box } from "@mui/system";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthService } from "../../services/auth.service";
-import { useUserStore } from "../../states/user-store";
+import { useUserStore } from "../../stores/user-store";
 import NavItem, { NavItemProps } from "./components/nav-item";
 import {
   AccountSection,
@@ -75,21 +75,18 @@ const SideBar = () => {
     defaultMatches: true,
   });
   const [isOpen, setIsOpen] = useState(false);
-  const { user } = useUserStore();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const isMenuOpen = Boolean(anchorEl);
-  const { clearUser } = useUserStore();
+  const { clearUser, user } = useUserStore();
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleLogout = async () => {
-    if (await AuthService.logout()) {
-      clearUser();
-      navigate("/");
-    }
+    await clearUser();
+    navigate("/");
   };
 
   const items = (

@@ -1,25 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: de-server
+  name: server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: de
+      app: server
   template:
     metadata:
       labels:
-        app: de
+        app: server
     spec:
       containers:
-        - name: de
+        - name: server
           image: omergal/digital-envelope-server
+          envFrom:
+            - configMapRef:
+                name: postgres-config
           env:
             - name: CLIENT_ID
               value: "277026531583-scjcgic2kb81fa6b76mljrn523e77lca.apps.googleusercontent.com"
             - name: DATABASE_URL
-              value: "postgres://grthhtioyrvogb:2fb1e6c445c3deb6361721a65f102981145342925d0e05b5d7896033e9f37553@ec2-176-34-215-248.eu-west-1.compute.amazonaws.com:5432/dd031li88imtq6"
+              value: "postgres://postgres-srv:5432"
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:
@@ -36,12 +39,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: de-srv
+  name: server-srv
 spec:
   selector:
-    app: de
+    app: server
   ports:
-    - name: de
+    - name: server
       protocol: TCP
       port: 3000
       targetPort: 3000

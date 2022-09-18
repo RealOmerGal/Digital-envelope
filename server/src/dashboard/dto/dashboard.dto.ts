@@ -7,9 +7,12 @@ export class DashboardDto {
     max: number;
   };
 
-  @Transform(({ obj }) => obj.averagePerGuest.avg)
+
   @Expose()
-  averagePerGuest: number;
+  averagePerGuest: {
+    avg: number,
+    comaredToSimilar: number
+  };
 
   @Transform(({ obj }) => obj.totalAmount.sum)
   @Expose()

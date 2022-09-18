@@ -15,6 +15,9 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsString()
-  photoUrl: string
+  photoUrl?: string;
 
+  @IsOptional()
+  @IsString()
+  paymentProfileId?: string;
 }

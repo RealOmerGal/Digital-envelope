@@ -16,7 +16,10 @@ export class User {
   lastName: string;
 
   @Column({ nullable: true })
-  photoUrl?: string
+  paymentProfileId?: string;
+
+  @Column({ nullable: true })
+  photoUrl?: string;
 
   @OneToMany(() => Event, (event) => event.user)
   events?: Event[];

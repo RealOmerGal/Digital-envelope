@@ -31,7 +31,6 @@ const HomePage = () => {
       <InnerContainer>
         <Header>Digital Envelope</Header>
         <Box>
-          <SpacedButton variant="outlined">How it works</SpacedButton>
           <SpacedButton variant="contained" onClick={handleLogin}>
             Get started
           </SpacedButton>

@@ -6,20 +6,20 @@ import { StatBox, StyledGrid } from "./styles";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import GroupIcon from "@mui/icons-material/Group";
-import { ArrowDownward } from "@mui/icons-material";
 import DashboardToolbar from "../../components/toolbar";
 import SideBar from "../../components/sidebar";
-import { UtilityService } from "../../services/util.service";
+import { AppService } from "../../services/app.service";
 import DashboardChart from "./components/chart";
 import CenteringContainer from "../../components/CenteringContainer";
 import useLoading from "../../hooks/useLoading";
 import Loading from "../../components/Loading";
-
+import SimilarEventStat from "./components/SimilarEventStat";
+import formatter from "../../utils/currency-formatter.util";
 const Dashboard = () => {
   const [data, setData] = useState<IDashboard>();
 
   const getData = async () => {
-    const data = await UtilityService.generateDashboard();
+    const data = await AppService.generateDashboard();
     setData((prev) => data);
   };
 
@@ -53,22 +53,12 @@ const Dashboard = () => {
                   title="Average Per Guest"
                   iconColor="#D14343"
                   icon={<InsertChartIcon />}
-                  mainStat={data!.averagePerGuest + "$"}
+                  mainStat={formatter.format(data!.averagePerGuest.avg)}
                 >
                   <StatBox>
-                    <ArrowDownward color="error" />
-                    <Typography
-                      color="error"
-                      sx={{
-                        mr: 1,
-                      }}
-                      variant="body2"
-                    >
-                      12%
-                    </Typography>
-                    <Typography color="textSecondary" variant="caption">
-                      Compared to similar events
-                    </Typography>
+                    <SimilarEventStat
+                      data={data!.averagePerGuest.comparedToSimilar}
+                    />
                   </StatBox>
                 </DashboardCard>
               </StyledGrid>
@@ -99,7 +89,10 @@ const Dashboard = () => {
                   title="Money Collected"
                   iconColor="#14B8A6"
                   icon={<AttachMoneyIcon />}
-                  mainStat={data!.totalAmount + "$"}
+                  //TODO: Find a nicer way to do this
+                  mainStat={formatter.format(
+                    +data!.totalAmount.substring(1).replace(",", "")
+                  )}
                 ></DashboardCard>
               </StyledGrid>
               <Grid item lg={8} sm={12} xl={8} xs={12}>

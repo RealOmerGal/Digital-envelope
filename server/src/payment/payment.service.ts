@@ -1,75 +1,41 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import Stripe from 'stripe';
 import { Repository } from 'typeorm';
-import { paypalClient } from './client/payment.client';
-import { CreatePaymentDto } from './dto/create-payment.dto';
+import { InjectStripe } from 'nestjs-stripe';
 import { Payment, PaymentPlatform } from './payment.entity';
 
 @Injectable()
 export class PaymentService {
-  constructor(@InjectRepository(Payment) private repo: Repository<Payment>) { }
+  constructor(
+    @InjectRepository(Payment) private repo: Repository<Payment>,
+    @InjectStripe() private readonly stripeClient: Stripe,
+  ) {}
 
   findById(id: number) {
     return this.repo.findOneBy({ id });
   }
-  //TODO: Delete this later after implementing real payments
-  createMock(amount: number) {
-    const payment = this.repo.create({ amount, platform: PaymentPlatform.PAYPAL, ref: '123123123' });
-    return this.repo.save(payment);
+
+  async create(
+    price: number,
+    token: any,
+    email: string,
+    paymentProfileId: string,
+  ) {
+    //TODO: add peer to peer payments
+    const charge = await this.stripeClient.paymentIntents.create({
+      currency: 'USD',
+      amount: price * 100,
+      payment_method: token,
+      receipt_email: email,
+      // on_behalf_of: paymentProfileId,
+      confirm: true,
+    });
+    const payment = this.repo.create({
+      amount: price,
+      platform: PaymentPlatform.STRIPE,
+      ref: charge.id,
+    });
+    return { entity: await this.repo.save(payment), stripe: charge.id };
   }
-  // create({ by, total, eventName }: CreatePaymentDto, res: Response) {
-  //   const paymentData: paypalClient.Payment = {
-  //     intent: 'sale',
-  //     payer: {
-  //       payment_method: 'paypal',
-  //     },
-  //     redirect_urls: {
-  //       //TODO: Replace those for real urls
-  //       return_url: 'http://return.url',
-  //       cancel_url: 'http://cancel.url',
-  //     },
-  //     transactions: [
-  //       {
-  //         item_list: {
-  //           items: [
-  //             {
-  //               name: by,
-  //               price: total,
-  //               currency: 'USD',
-  //               quantity: 1,
-  //             },
-  //           ],
-  //         },
-  //         amount: {
-  //           currency: 'USD',
-  //           total: '1.00',
-  //         },
-  //         description: `${by}'s Blessing for ${eventName} `,
-  //       },
-  //     ],
-  //   };
-
-  //   paypalClient.payment.create(paymentData, (err, payment) => {
-  //     if (err) throw err; //TODO: redirect to failure url
-  //     else {
-  //       payment.links.map((link) => {
-  //         if (link.rel === 'approval_url') res.redirect(link.href)
-  //       })
-  //     }
-  //   });
-  // }
-
-  success(payerID: any, paymentId: any) {
-
-    paypalClient.payment.execute(paymentId, payerID, function (error, payment) {
-      if (error) throw error;
-      if (payment.state === 'approved') {
-        console.log(payment);
-        //TODO: Redirect to sucesss url or other success logic
-      } else {
-        throw new BadRequestException()
-      }
-    })
-  }
-
 }

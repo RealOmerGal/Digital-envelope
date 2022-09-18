@@ -1,13 +1,12 @@
 //Attrs required to create a blessing (the dto)
-export interface ICreateBlessing {
+export interface CreateBlessingDto {
   text: string;
   createdBy: string;
   eventId: number;
-  amount: number;
 }
 
 //The blessing entity in the server
-export interface Blessing extends ICreateBlessing {
+export interface Blessing extends CreateBlessingDto {
   id: number;
   createdAt: Date;
 }

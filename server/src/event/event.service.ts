@@ -1,5 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../user/user.entity';
 import { Repository } from 'typeorm';
 import { CreateEventDto } from './dto/create-event.dto';
 import { Event } from './event.entity';
@@ -8,8 +13,13 @@ import { Event } from './event.entity';
 export class EventService {
   constructor(@InjectRepository(Event) private repo: Repository<Event>) {}
 
-  create(createEventDto: CreateEventDto, userId: string) {
-    const event = this.repo.create({ user: { id: userId }, ...createEventDto });
+  create(createEventDto: CreateEventDto, user: User) {
+    //If user didnt set him payment profile, event cannot be open
+    if (!user.paymentProfileId) createEventDto.closed = true;
+    const event = this.repo.create({
+      user: { id: user.id },
+      ...createEventDto,
+    });
     return this.repo.save(event);
   }
 
@@ -33,6 +43,10 @@ export class EventService {
   }
 
   async update(id: number, attrs: Partial<Event>) {
+    if (attrs.closed === false)
+      throw new BadRequestException(
+        'Cannot open an event without payment profile set',
+      );
     const event = await this.findOne(id);
     Object.assign(event, attrs);
     return this.repo.save(event);

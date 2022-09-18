@@ -5,11 +5,12 @@ import HomePage from "./pages/home";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import { Suspense, useEffect } from "react";
-import { useUserStore } from "./states/user-store";
+import { useUserStore } from "./stores/user-store";
 import React from "react";
-import { AuthService } from "./services/auth.service";
 import { RequireAuth } from "./components/RequireAuth";
 import Loading from "./components/Loading";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const App = () => {
   const ShowEvents = React.lazy(() => import("./pages/show-events"));
@@ -18,13 +19,12 @@ const App = () => {
   const Dashboard = React.lazy(() => import("./pages/dashboard"));
   const CreateEvent = React.lazy(() => import("./pages/create-event"));
   const EditEvent = React.lazy(() => import("./pages/edit-event"));
-  const { user, setUser } = useUserStore();
-  const fetchUser = async () => {
-    const data = await AuthService.getUser();
-    setUser(data);
-  };
+  const { user, storeCurrentUser } = useUserStore();
+  const stripeClient = loadStripe(
+    "pk_test_51L7i4RGHAMj9Boauziuk9EFyiXAzPsv7RWE1ZWBsF6dtEG77WnbbdGmUyE1cyuAfa5oMBHnm41efExk7KU3sAR3p00lv4rPKFn"
+  );
   useEffect(() => {
-    if (user.id === "") fetchUser();
+    if (user.id === "") storeCurrentUser();
   }, []);
 
   const routes = [
@@ -35,8 +35,13 @@ const App = () => {
 
     {
       path: "/blessings/:eventid",
-      element: <CreateBlessing />,
+      element: (
+        <Elements stripe={stripeClient}>
+          <CreateBlessing />
+        </Elements>
+      ),
     },
+
     {
       path: "/events",
       element: (

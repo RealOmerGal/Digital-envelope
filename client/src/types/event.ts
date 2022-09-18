@@ -1,5 +1,5 @@
 //Attrs required to create an event (the dto)
-export interface ICreateEvent {
+export interface CreateEventDto {
   name: string;
   estimatedGuests: number;
   type: EventTypes;
@@ -14,7 +14,7 @@ export enum EventTypes {
 }
 
 //The event entity from the server
-export interface Event extends ICreateEvent {
+export interface Event extends CreateEventDto {
   id: number;
   createdAt: Date;
   lastUpdatedAt: Date;
