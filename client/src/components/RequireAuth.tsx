@@ -1,5 +1,5 @@
 import { ReactElement, useEffect } from "react";
-import { serverUrl } from "../config";
+import { AuthService } from "../services/auth.service";
 import { useUserStore } from "../stores/user-store";
 
 type Props = {
@@ -11,7 +11,7 @@ export const RequireAuth = (props: Props) => {
 
   useEffect(() => {
     if (user.id === "") {
-      window.location.replace(`${serverUrl}/auth/google`);
+      AuthService.login();
     }
   }, []);
 

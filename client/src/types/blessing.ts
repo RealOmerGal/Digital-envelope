@@ -3,7 +3,6 @@ export interface CreateBlessingDto {
   text: string;
   createdBy: string;
   eventId: number;
-  amount: number;
 }
 
 //The blessing entity in the server

@@ -1,24 +1,41 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import Stripe from 'stripe';
 import { Repository } from 'typeorm';
-import stripeClient from './client/stripe.client';
-import { CreatePaymentDto } from './dto/create-payment.dto';
+import { InjectStripe } from 'nestjs-stripe';
 import { Payment, PaymentPlatform } from './payment.entity';
 
 @Injectable()
 export class PaymentService {
-  constructor(@InjectRepository(Payment) private repo: Repository<Payment>) {}
+  constructor(
+    @InjectRepository(Payment) private repo: Repository<Payment>,
+    @InjectStripe() private readonly stripeClient: Stripe,
+  ) {}
 
   findById(id: number) {
     return this.repo.findOneBy({ id });
   }
-  //TODO: Delete this later after implementing real payments
-  createMock(amount: number) {
-    const payment = this.repo.create({
-      amount,
-      platform: PaymentPlatform.STRIPE,
-      ref: '123123123',
+
+  async create(
+    price: number,
+    token: any,
+    email: string,
+    paymentProfileId: string,
+  ) {
+    //TODO: add peer to peer payments
+    const charge = await this.stripeClient.paymentIntents.create({
+      currency: 'USD',
+      amount: price * 100,
+      payment_method: token,
+      receipt_email: email,
+      // on_behalf_of: paymentProfileId,
+      confirm: true,
     });
-    return this.repo.save(payment);
+    const payment = this.repo.create({
+      amount: price,
+      platform: PaymentPlatform.STRIPE,
+      ref: charge.id,
+    });
+    return { entity: await this.repo.save(payment), stripe: charge.id };
   }
 }

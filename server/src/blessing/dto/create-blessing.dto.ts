@@ -1,7 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsPositive, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNumber,
+  IsObject,
+  IsPositive,
+  IsString,
+} from 'class-validator';
 
-export class CreateBlessingDto {
+export class CreateBlessingAndPaymentDto {
   @IsString()
   createdBy: string;
 
@@ -13,5 +19,11 @@ export class CreateBlessingDto {
 
   @Type(() => Number)
   @IsPositive()
-  amount: number
+  amount: number;
+
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  token: string;
 }

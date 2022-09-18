@@ -35,6 +35,7 @@
     "cookie-session": "^2.0.0",
     "express-session": "^1.17.3",
     "nest-winston": "^1.7.0",
+    "nestjs-stripe": "^1.0.0",
     "passport": "^0.6.0",
     "passport-google-oauth20": "^2.0.0",
     "pg": "^8.7.3",

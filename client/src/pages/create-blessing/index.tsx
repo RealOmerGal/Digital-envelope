@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from "../../hooks/useForm";
 import { CreateBlessingDto } from "../../types/blessing";
 import {
   Box,
@@ -11,7 +10,10 @@ import {
   Typography,
 } from "@mui/material";
 import CenteringContainer from "../../components/CenteringContainer";
+import { CreatePaymentDto } from "../../types/payment";
 import { BlessingService } from "../../services/blessing.service";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import { showErrorMessage } from "../../utils/error-message.util";
 
 const SubmitBlessing: React.FC<any> = () => {
   const eventId = parseInt(useParams().eventid!);
@@ -26,26 +28,59 @@ const SubmitBlessing: React.FC<any> = () => {
     setEventName((prev) => name);
   }, []);
 
-  const handleSubmit = async () => {
-    // setBlessing({ ...values, eventId });
-    await BlessingService.create(values);
-    clearForm();
-  };
+  const [paymentDto, setPaymnetDto] = useState<CreatePaymentDto>({
+    amount: 0,
+    email: "",
+  });
+  const [blessingDto, setBlessingDto] = useState<CreateBlessingDto>({
+    createdBy: "",
+    text: "",
+    eventId,
+  });
+  const elements = useElements();
+  const stripe = useStripe();
 
-  const { onChange, onSubmit, values, clearForm } = useForm<CreateBlessingDto>(
-    handleSubmit,
-    {
-      createdBy: "",
-      eventId,
-      text: "",
-      amount: 0,
+  const handleSubmit = async (e: any) => {
+    if (
+      blessingDto.createdBy &&
+      eventId &&
+      blessingDto.text &&
+      paymentDto.amount &&
+      paymentDto.email
+    ) {
+      e.preventDefault();
+      const cardElement = elements!.getElement(CardElement);
+      const { error, paymentMethod } = await stripe!.createPaymentMethod({
+        type: "card",
+        card: cardElement!,
+        billing_details: { email: paymentDto.email },
+      });
+
+      if (error) {
+        showErrorMessage({
+          title: "Payment failed",
+          errorString: error.message,
+        });
+      } else {
+        await BlessingService.create(
+          blessingDto,
+          {
+            ...paymentDto,
+            token: paymentMethod.id,
+          },
+          () => navigate("/")
+        );
+      }
     }
-  );
+  };
+  if (!stripe || !elements) {
+    return <></>;
+  }
 
   return (
     <CenteringContainer>
       <Container maxWidth="sm">
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit}>
           <Box sx={{ my: 3 }}>
             <Typography color="textPrimary" variant="h4">
               {"Welcome to " + eventName}
@@ -59,16 +94,26 @@ const SubmitBlessing: React.FC<any> = () => {
             margin="normal"
             name="createdBy"
             label="Your name"
-            value={values.createdBy}
-            onChange={onChange}
+            value={blessingDto.createdBy}
+            onChange={(e) => {
+              setBlessingDto({
+                ...blessingDto,
+                createdBy: e.target.value,
+              });
+            }}
           />
           <TextField
             fullWidth
             margin="normal"
             name="amount"
             label="Amount to pay (USD $)"
-            value={values.amount}
-            onChange={onChange}
+            value={paymentDto.amount}
+            onChange={(e) =>
+              setPaymnetDto({
+                ...paymentDto,
+                amount: parseInt(e.target.value),
+              })
+            }
             inputProps={{ inputMode: "numeric" }}
           />
           <TextField
@@ -77,9 +122,31 @@ const SubmitBlessing: React.FC<any> = () => {
             margin="normal"
             name="text"
             label="Your blessing..."
-            value={values.text}
-            onChange={onChange}
+            value={blessingDto.text}
+            onChange={(e) => {
+              setBlessingDto({
+                ...blessingDto,
+                text: e.target.value,
+              });
+            }}
           />
+          <TextField
+            fullWidth
+            multiline
+            margin="normal"
+            name="email"
+            label="Billing email"
+            value={paymentDto.email}
+            onChange={(e) =>
+              setPaymnetDto({
+                ...paymentDto,
+                email: e.target.value,
+              })
+            }
+          />
+          <Box sx={{ p: 2, border: "1px solid #E6E8F0", borderRadius: "8px" }}>
+            <CardElement options={{ hidePostalCode: true }} />
+          </Box>
           <Box sx={{ py: 2 }}>
             <Button fullWidth size="large" type="submit" variant="contained">
               Submit

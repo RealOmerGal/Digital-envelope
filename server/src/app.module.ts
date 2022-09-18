@@ -55,6 +55,7 @@ const cookieSession = require('cookie-session');
           // username: config.get('POSTGRES_USER'),
           // password: config.get('POSTGRES_PASSWORD'),
           synchronize: true,
+
           // ssl: {false},
           ssl: {
             rejectUnauthorized: false,
