@@ -7,7 +7,6 @@ export class DashboardDto {
     max: number;
   };
 
-
   @Expose()
   averagePerGuest: {
     avg: number,

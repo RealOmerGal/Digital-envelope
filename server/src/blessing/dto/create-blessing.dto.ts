@@ -2,7 +2,6 @@ import { Type } from 'class-transformer';
 import {
   IsEmail,
   IsNumber,
-  IsObject,
   IsPositive,
   IsString,
 } from 'class-validator';
