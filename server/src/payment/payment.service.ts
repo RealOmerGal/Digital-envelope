@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Stripe from 'stripe';
 import { Repository } from 'typeorm';
-import { InjectStripe } from 'nestjs-stripe';
+import { InjectStripeClient } from '@golevelup/nestjs-stripe';
 import { Payment, PaymentPlatform } from './payment.entity';
 
 @Injectable()
 export class PaymentService {
   constructor(
     @InjectRepository(Payment) private repo: Repository<Payment>,
-    @InjectStripe() private readonly stripeClient: Stripe,
-  ) {}
+    @InjectStripeClient() private readonly stripeClient: Stripe,
+  ) { }
 
   findById(id: number) {
     return this.repo.findOneBy({ id });

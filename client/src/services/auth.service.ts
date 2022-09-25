@@ -9,7 +9,7 @@ export class AuthService {
     ).data;
   }
   public static login(): void {
-    window.location.href = `api${this.prefix}/google`;
+    window.location.replace(`api${this.prefix}/google`)
   }
   public static async logout(): Promise<void> {
     await axiosInstance.post(`${this.prefix}/logout`);

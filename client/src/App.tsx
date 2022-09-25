@@ -44,11 +44,7 @@ const App = () => {
 
     {
       path: "/events",
-      element: (
-        <RequireAuth>
-          <ShowEvents />
-        </RequireAuth>
-      ),
+      element: <ShowEvents />,
     },
     {
       path: "/qr",

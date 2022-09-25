@@ -102,7 +102,6 @@ describe('Event Controller', () => {
 
         mockSession,
       );
-      console.log(mockSession, updatedEvent);
       expect(mockSession.event).toEqual(updatedEvent);
     });
   });
