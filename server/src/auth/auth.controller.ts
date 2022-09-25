@@ -46,7 +46,7 @@ export class AuthController {
     try {
       const user = await this.authService.googleAuth(req);
       session.user = user;
-      res.redirect('http://www.digitalenvlope.xyz/events');
+      res.redirect('http://digital-envelope.dev/events');
       return user;
     } catch (e) {
       throw new Error(e);

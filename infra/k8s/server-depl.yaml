@@ -20,9 +20,9 @@ spec:
                 name: postgres-config
           env:
             - name: CLIENT_ID
-              value: "277026531583-scjcgic2kb81fa6b76mljrn523e77lca.apps.googleusercontent.com"
+              value: 277026531583-scjcgic2kb81fa6b76mljrn523e77lca.apps.googleusercontent.com
             - name: DATABASE_URL
-              value: "postgres://postgres-srv:5432"
+              value: postgres://root:password@postgres-srv:5432/digital-envelope
             - name: SESSION_SECRET
               valueFrom:
                 secretKeyRef:

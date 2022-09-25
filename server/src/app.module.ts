@@ -51,15 +51,8 @@ const cookieSession = require('cookie-session');
         return {
           type: 'postgres',
           url,
-          // database: config.get('POSTGRES_DB'),
-          // username: config.get('POSTGRES_USER'),
-          // password: config.get('POSTGRES_PASSWORD'),
           synchronize: true,
-
-          // ssl: {false},
-          ssl: {
-            rejectUnauthorized: false,
-          },
+          ssl: false,
           entities: [Blessing, Event, User, Payment],
         };
       },
@@ -89,7 +82,6 @@ export class AppModule {
     consumer
       .apply(
         cookieSession({
-          secure: false,
           keys: [this.configService.get('COOKIE_KEY')],
         }),
       )

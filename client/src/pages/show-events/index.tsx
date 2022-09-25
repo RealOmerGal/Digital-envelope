@@ -29,7 +29,7 @@ const ShowEvents: React.FC<any> = () => {
   const renderContent = () => {
     if (loading) return <Loading />;
 
-    if (events.length > 0) {
+    if (events && events.length > 0) {
       return (
         <>
           <CenteringContainer>

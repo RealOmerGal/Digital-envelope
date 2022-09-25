@@ -1,1 +1,1 @@
-export const serverUrl = "http://www.digital-envelope.xyz/api";
+export const serverUrl = "http://digital-envelope.dev/api";
