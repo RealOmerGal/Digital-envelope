@@ -28,7 +28,7 @@ const EditEvent = () => {
   const handleSubmit = () => {
     showConfirmMessage({
       title: "Save changes",
-      text: "Are you sure you want to save youe changes?",
+      text: "Are you sure you want to save youre changes?",
       handleYes: async () => {
         try {
           await updateEvent(values!);
