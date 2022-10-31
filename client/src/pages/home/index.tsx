@@ -1,16 +1,16 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
+import { useRef } from "react";
 import Swal from "sweetalert2";
+import CenteringContainer from "../../components/CenteringContainer";
 import { AuthService } from "../../services/auth.service";
-import GoogleSignInSection from "./components/google-section";
-import {
-  Header,
-  InnerContainer,
-  Layout,
-  Scrollable,
-  SpacedButton,
-} from "./styles";
+import DocsStep from "./components/docs-step";
+import { Header, Layout, SpacedButton } from "./styles";
 
 const HomePage = () => {
+  const docsRef = useRef<HTMLElement>(null);
+  const handleScroll = () => {
+    docsRef?.current?.scrollIntoView({ behavior: "smooth" });
+  };
   const handleLogin = () => {
     Swal.fire({
       title: "Sign in",
@@ -28,19 +28,35 @@ const HomePage = () => {
 
   return (
     <Layout>
-      <InnerContainer>
+      <CenteringContainer direction="column" sx={{ height: "90vh" }}>
         <Header>Digital Envelope</Header>
         <Box>
           <SpacedButton variant="contained" onClick={handleLogin}>
             Get started
           </SpacedButton>
+          <SpacedButton variant="outlined" onClick={handleScroll}>
+            How it works
+          </SpacedButton>
         </Box>
-      </InnerContainer>
-      <Scrollable>
-        <GoogleSignInSection />
-        <GoogleSignInSection />
-        <GoogleSignInSection />
-      </Scrollable>
+      </CenteringContainer>
+      <CenteringContainer ref={docsRef} direction="column">
+        <DocsStep
+          header="Sign in with your google account"
+          imgSrc="../../../../assets/google-sign-in.PNG"
+        />
+        <DocsStep
+          header="Create an event"
+          imgSrc="../../../../assets/google-sign-in.PNG"
+        />
+        <DocsStep
+          header="Publish the generated QR"
+          imgSrc="../../../../assets/google-sign-in.PNG"
+        />
+        <DocsStep
+          header="Track your event's blessings and recieve insights at anytime"
+          imgSrc="../../../../assets/google-sign-in.PNG"
+        />
+      </CenteringContainer>
     </Layout>
   );
 };

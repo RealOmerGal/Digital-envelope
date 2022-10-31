@@ -1,8 +1,8 @@
 import { Check, Block, Event as EventIcon, People } from "@mui/icons-material";
 import {
+  Button,
   CardContent,
   CardHeader,
-  Chip,
   Divider,
   Typography,
 } from "@mui/material";
@@ -11,7 +11,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useEventStore } from "../../../../stores/event-store";
 import { Event } from "../../../../types/event";
-import { CardContainer } from "./styles";
+import { ButtonContainer, CardContainer } from "./styles";
 
 const EventItem: React.FC<{ event: Event }> = ({ event }) => {
   const { storeEvent } = useEventStore();
@@ -21,10 +21,24 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
     await storeEvent(event);
     navigate("/dashboard");
   };
-
+  const chip = event.closed ? (
+    <Box display="flex" sx={{ gap: "10px" }}>
+      <Block color="error" />
+      <Typography color="error" variant="subtitle1">
+        {"Closed"}
+      </Typography>
+    </Box>
+  ) : (
+    <Box display="flex" sx={{ gap: "10px" }}>
+      <Check color="success" />
+      <Typography color="success" variant="subtitle1">
+        {"Open"}
+      </Typography>
+    </Box>
+  );
   return (
-    <CardContainer>
-      <Box sx={{ cursor: "pointer" }} onClick={handleItemClick}>
+    <CardContainer sx={{ borderColor: "red" }}>
+      <Box>
         <CardHeader
           title={<Box color="black"> {event.name}</Box>}
           subheader={"Created at: " + createdAt}
@@ -33,36 +47,23 @@ const EventItem: React.FC<{ event: Event }> = ({ event }) => {
         <CardContent>
           <Box display="flex" sx={{ gap: "10px" }}>
             <EventIcon sx={{ color: "grayText" }} />
-            <Typography color="black" variant="body1">
+            <Typography color="black" variant="subtitle1">
               {event.type}
             </Typography>
           </Box>
           <Box display="flex" sx={{ gap: "10px" }}>
             <People sx={{ color: "grayText" }} />
-            <Typography color="black" variant="body1">
+            <Typography color="black" variant="subtitle1">
               {event.estimatedGuests}
             </Typography>
           </Box>
+          {chip}
         </CardContent>
-        <Box sx={{ flexGrow: 1 }}>
-          <Box sx={{ pb: 1, pl: 1 }}>
-            {event.closed ? (
-              <Chip
-                label={"Closed"}
-                color={"error"}
-                sx={{ fontWeight: "600" }}
-                icon={<Block />}
-              />
-            ) : (
-              <Chip
-                label={"Open"}
-                color={"success"}
-                sx={{ fontWeight: "600" }}
-                icon={<Check />}
-              />
-            )}
-          </Box>
-        </Box>
+        <ButtonContainer>
+          <Button variant="contained" onClick={handleItemClick}>
+            Select
+          </Button>
+        </ButtonContainer>
       </Box>
     </CardContainer>
   );

@@ -48,9 +48,7 @@ export class AuthController {
       session.user = user;
       res.redirect('http://digital-envelope.dev/events');
       return user;
-    } catch (e) {
-      throw new Error(e);
-    }
+    } catch (e) { }
   }
 
   @Post('logout')

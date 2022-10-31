@@ -20,20 +20,18 @@ import { useEventStore } from "../../stores/event-store";
 import { Event, EventTypes } from "../../types/event";
 import { ButtonContainer, StyledGridItem } from "./styles";
 import { showConfirmMessage } from "../../utils/confirm-message.util";
-import { showSuccessMessage } from "../../utils/success-message.util";
+import { useNavigate } from "react-router-dom";
 
 const EditEvent = () => {
   const { event, updateEvent } = useEventStore();
-
+  const navigate = useNavigate();
   const handleSubmit = () => {
     showConfirmMessage({
       title: "Save changes",
-      text: "Are you sure you want to save youe changes?",
+      text: "Are you sure you want to save youre changes?",
       handleYes: async () => {
-        try {
-          await updateEvent(values!);
-          showSuccessMessage({ title: "Changes saved" });
-        } catch (e) {}
+        await updateEvent(values!);
+        navigate("/dashboard");
       },
     });
   };

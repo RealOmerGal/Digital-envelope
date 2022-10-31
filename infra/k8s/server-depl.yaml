@@ -35,6 +35,13 @@ spec:
                 secretKeyRef:
                   name: google-secret
                   key: CLIENT_SECRET
+            - name: STRIPE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_SECRET
+            - name: STRIPE_CLIENT
+              value: pk_test_51L7i4RGHAMj9Boauziuk9EFyiXAzPsv7RWE1ZWBsF6dtEG77WnbbdGmUyE1cyuAfa5oMBHnm41efExk7KU3sAR3p00lv4rPKFn
 ---
 apiVersion: v1
 kind: Service

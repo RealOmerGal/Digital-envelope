@@ -47,7 +47,11 @@ const Dashboard = () => {
         <Stack sx={{ flexGrow: 1 }}>
           <DashboardToolbar />
           <CenteringContainer>
-            <Grid container spacing={3}>
+            <Grid
+              container
+              spacing={3}
+              sx={{ width: { xs: "90vw", sm: "85vw" } }}
+            >
               <StyledGrid>
                 <DashboardCard
                   title="Average Per Guest"
@@ -95,7 +99,7 @@ const Dashboard = () => {
                   )}
                 ></DashboardCard>
               </StyledGrid>
-              <Grid item lg={8} sm={12} xl={8} xs={12}>
+              <Grid item lg={12} sm={12} xl={12} xs={12}>
                 <DashboardChart records={data!.amountDistribution} />
               </Grid>
             </Grid>
