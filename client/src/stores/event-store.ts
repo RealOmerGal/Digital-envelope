@@ -38,25 +38,33 @@ const useStore = create<EventState>((set) => ({
     try {
       await EventService.store(event);
       set({ event });
-    } catch (e) {}
+    } catch (e: any) {
+      showErrorMessage({ errorString: e.message as string })
+    }
   },
   createEvent: async (CreateEventDto: CreateEventDto) => {
     try {
       const event = await EventService.create(CreateEventDto);
       set({ event });
-    } catch (e) {}
+    } catch (e: any) {
+      showErrorMessage({ errorString: e.message as string })
+    }
   },
   updateEvent: async (event: Event): Promise<void> => {
     try {
       const updatedEvent = await EventService.update(event);
       set({ event: updatedEvent });
-    } catch (e) {}
+    } catch (e: any) {
+      showErrorMessage({ errorString: e.message as string })
+    }
   },
   deleteEvent: async (eventId: number) => {
     try {
       await EventService.delete(eventId);
       set({ event: initEvent });
-    } catch (e) {}
+    } catch (e: any) {
+      showErrorMessage({ errorString: e.message as string })
+    }
   },
 }));
 

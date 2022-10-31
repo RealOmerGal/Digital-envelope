@@ -22,7 +22,7 @@ import { EventGuard } from '../guards/event.guard';
 
 @Controller('event')
 export class EventController {
-  constructor(private readonly eventService: EventService) {}
+  constructor(private readonly eventService: EventService) { }
 
   @Post()
   async create(
@@ -43,12 +43,14 @@ export class EventController {
   @Put()
   async update(
     @CurrentEvent() event: Event,
+    @CurrentUser() user: User,
     @Body() updateEventDto: UpdateEventDto,
     @Session() session: any,
   ) {
     const updatedEvent = await this.eventService.update(
       event.id,
       updateEventDto,
+      user
     );
     return (session.event = updatedEvent);
   }

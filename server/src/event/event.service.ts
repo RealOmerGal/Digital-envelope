@@ -11,7 +11,7 @@ import { Event } from './event.entity';
 
 @Injectable()
 export class EventService {
-  constructor(@InjectRepository(Event) private repo: Repository<Event>) {}
+  constructor(@InjectRepository(Event) private repo: Repository<Event>) { }
 
   create(createEventDto: CreateEventDto, user: User) {
     //If user didnt set him payment profile, event cannot be open
@@ -42,8 +42,8 @@ export class EventService {
     });
   }
 
-  async update(id: number, attrs: Partial<Event>) {
-    if (attrs.closed === false)
+  async update(id: number, attrs: Partial<Event>, user: User) {
+    if (attrs.closed === false && !user.paymentProfileId)
       throw new BadRequestException(
         'Cannot open an event without payment profile set',
       );

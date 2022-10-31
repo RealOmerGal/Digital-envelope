@@ -11,3 +11,10 @@ export const FlexBox = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   paddingBottom: 3,
 }));
+
+export const ButtonContainer = styled(Box)(({ theme }) => ({
+  flexGrow: 1,
+  margin: 8,
+  display: "flex",
+  justifyContent: "flex-end",
+}));
