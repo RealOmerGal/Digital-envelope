@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import Stripe from 'stripe';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { InjectStripeClient } from '@golevelup/nestjs-stripe';
 import { Payment, PaymentPlatform } from './payment.entity';
 
@@ -21,6 +21,7 @@ export class PaymentService {
     token: any,
     email: string,
     paymentProfileId: string,
+    transcationalEntityManager?: EntityManager
   ) {
     //TODO: add peer to peer payments
     const charge = await this.stripeClient.paymentIntents.create({
@@ -31,11 +32,20 @@ export class PaymentService {
       // on_behalf_of: paymentProfileId,
       confirm: true,
     });
-    const payment = this.repo.create({
-      amount: price,
-      platform: PaymentPlatform.STRIPE,
-      ref: charge.id,
-    });
-    return { entity: await this.repo.save(payment), stripe: charge.id };
+    if (transcationalEntityManager) {
+      const payment = transcationalEntityManager.create(Payment, {
+        amount: price,
+        platform: PaymentPlatform.STRIPE,
+        ref: charge.id,
+      });
+      return { entity: await transcationalEntityManager.save(payment), stripe: charge.id };
+    } else {
+      const payment = this.repo.create({
+        amount: price,
+        platform: PaymentPlatform.STRIPE,
+        ref: charge.id,
+      });
+      return { entity: await this.repo.save(payment), stripe: charge.id };
+    }
   }
 }
