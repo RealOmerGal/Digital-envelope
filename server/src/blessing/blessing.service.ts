@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Blessing } from './blessing.entity';
 import { BadRequestException } from '@nestjs/common';
 import { EventService } from '../event/event.service';
@@ -14,7 +14,7 @@ export class BlessingService {
     private eventService: EventService,
     private paymentService: PaymentService,
     @InjectDataSource() private dataSource: DataSource,
-  ) {}
+  ) { }
 
   async create(dto: CreateBlessingAndPaymentDto) {
     const event = await this.eventService.findOne(dto.eventId);
@@ -29,22 +29,23 @@ export class BlessingService {
       //Find the payment profile for the event's user
       const paymentProfileId = await this.getPaymentProfileForEvent(
         dto.eventId,
+        queryRunner.manager,
       );
       const payment = await this.paymentService.create(
         dto.amount,
         dto.token,
         dto.email,
         paymentProfileId,
+        queryRunner.manager,
       );
 
-      const blessing = this.repo.create({
+      const blessing = queryRunner.manager.create<Blessing>(Blessing, {
         event: { id: dto.eventId },
         payment: { id: payment.entity.id },
         createdBy: dto.createdBy,
         text: dto.text,
       });
-      await this.repo.save(blessing);
-      await queryRunner;
+      await queryRunner.manager.save(blessing);
       return payment.stripe;
     } catch (e) {
       queryRunner.rollbackTransaction();
@@ -68,8 +69,10 @@ export class BlessingService {
   }
 
   //TODO: check if public schema prefix is needed rn
-  async getPaymentProfileForEvent(eventId: number) {
-    const res = await this.dataSource.query(
+  async getPaymentProfileForEvent(eventId: number, transcationalEntityManager?: EntityManager) {
+
+    const connection = (transcationalEntityManager || this.dataSource);
+    const res = await connection.query(
       `
    SELECT public.user."paymentProfileId" 
    FROM public.event
