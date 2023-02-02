@@ -1,4 +1,4 @@
-import { Box, styled } from "@mui/material";
+import { styled } from "@mui/material";
 
 type DirectionProps = {
   direction?: "row" | "column";

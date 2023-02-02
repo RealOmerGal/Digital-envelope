@@ -7,7 +7,7 @@ import DocsStep from "./components/docs-step";
 import { Header, Layout, SpacedButton } from "./styles";
 
 const HomePage = () => {
-  const docsRef = useRef<HTMLElement>(null);
+  const docsRef = useRef<HTMLDivElement>(null);
   const handleScroll = () => {
     docsRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
