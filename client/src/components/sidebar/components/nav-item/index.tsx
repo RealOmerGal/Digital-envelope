@@ -28,10 +28,10 @@ const NavItem: React.FC<NavItemProps> = ({ link, title, icon, isPublic }) => {
         onClick={handleNavigate}
         disableRipple
         sx={{
-          backgroundColor: active && "rgba(255,255,255, 0.08)",
+          backgroundColor: active ? "rgba(255,255,255, 0.08)" : "unset",
           borderRadius: 1,
           color: active ? "secondary.main" : "neutral.300",
-          fontWeight: active && "fontWeightBold",
+          fontWeight: active ? "fontWeightBold" : "unset",
           justifyContent: "flex-start",
           px: 3,
           textAlign: "left",

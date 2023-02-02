@@ -102,7 +102,7 @@ const DashboardChart = (props: {
             position: "relative",
           }}
         >
-          <Bar data={dataOptions} options={options} />
+          <Bar data={dataOptions} options={options as any} />
         </Box>
       </CardContent>
       <Divider />
