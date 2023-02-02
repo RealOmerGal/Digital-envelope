@@ -17,7 +17,7 @@
 - Open or close the event for new blessings
 
 ## Entity Relationship Diagram
- ![alt text](https://drive.google.com/uc?id=1yYCPGv8nJ7Qiih6OqWGMtAviBjvto40P)
+ ![ERD](https://drive.google.com/uc?id=1yYCPGv8nJ7Qiih6OqWGMtAviBjvto40P)
 
 ## Technologies and design
 ### Front-end
