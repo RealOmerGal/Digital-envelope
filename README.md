@@ -25,12 +25,11 @@
 - Nestjs 
 - Typeorm and PostgreSQL
 ### Infrastracture
-As this project is still in development, it runs on a local kubernetes cluster
+As this project is still in development, it runs on a local kubernetes cluster - 
 the 3 deployments (client,server and db) are connected to Ingress-nginx load balancer
 It uses Skaffold.dev for automatic development pipline
 
 ## Future updates
-- Replace Zustand for a server state managment (React-query)
 - First production version: 
     - Host the project on cloud provider
     - Set-up Ci\Cd pipeline
